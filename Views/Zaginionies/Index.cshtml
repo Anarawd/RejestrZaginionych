@@ -1,0 +1,84 @@
+﻿@model Zaginionki.Models.ZaginionyPlecViewModel
+
+@{
+    ViewData["Title"] = "Rejestr Osob Zaginionych";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form asp-controller="Zaginionies" asp-action="Index">
+    <p>
+        Wojewodztwo:<input type="text" name="SearchString"/>
+        <input type ="submit" value="Filter"/>
+        <select asp-for="Plec" asp-items="Model.Plec">
+            <option value="">All</option>
+        </select>
+
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].Imie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].Nazwisko)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].DataZaginiecia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].Wojewodztwo)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].Opis)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].Plec)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Zaginieni[0].Zdjecie)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Zaginieni) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Imie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nazwisko)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataZaginiecia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Wojewodztwo)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Opis)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Plec)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Zdjecie)
+            </td>*@
+
+        <td>
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") ^ User.IsInRole("Verified")))
+            {<a asp-action="Edit" asp-route-id="@item.Id">Edit</a>}|
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") ^ User.IsInRole("Verified")))
+            {<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>}
+        </td>
+        </tr>
+}
+    </tbody>
+</table>
